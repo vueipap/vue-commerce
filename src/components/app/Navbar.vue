@@ -7,11 +7,27 @@
       <form class="d-flex">
         <div class="md-form form-group w-500">
           <input
+            v-model="buscador"
             class="form-control form-control-sm"
             type="search"
             placeholder="Buscar productos"
             aria-label="Search"
           />
+          <ol
+            v-if="activarCoincidencias"
+            class="list-group list-group-numbered w-500"
+            style="position: absolute; z-index: 1"
+          >
+            <li
+              v-for="(coincidencia, index) in coincidencias"
+              :key="index"
+              class="list-group-item"
+              style="cursor:pointer"
+              @click="verProducto(coincidencia)"
+            >
+              {{ coincidencia.descripcion }}
+            </li>
+          </ol>
         </div>
         <button class="btn btn-outline-success btn-sm" type="submit">
           Buscar
@@ -38,7 +54,7 @@
             type="button"
           >
             <i class="bi bi-cart"> </i>
-            <span class="badge bg-secondary">0</span>
+            <span class="badge bg-secondary">{{ carrito.length }}</span>
           </button>
         </router-link>
       </div>
@@ -49,6 +65,43 @@
 <script>
 export default {
   name: "Navbar-App",
+
+  data() {
+    return {
+      buscador: null,
+      coincidencias: [],
+      activarCoincidencias:false,
+    };
+  },
+  computed: {
+    carrito() {
+      return this.$store.state.carrito;
+    },
+    productos() {
+      return this.$store.state.productos;
+    },
+  },
+  methods: {
+    verProducto(coincidencia) {
+      this.activarCoincidencias = false;
+      this.$router.push(`/producto/${coincidencia.id}`);
+    },
+  },
+  watch: {
+    buscador() {
+      if (this.buscador && this.buscador.trim() != "") {
+        this.coincidencias = this.productos.filter((producto) =>
+          producto.descripcion
+            .toUpperCase()
+            .includes(this.buscador.toUpperCase())
+        );
+        this.activarCoincidencias = true;
+      } else {
+        this.activarCoincidencias = false;
+        this.coincidencias = [];
+      }
+    },
+  },
 };
 </script>
 
