@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-light bg-light">
     <div class="container-fluid">
-      <router-link to="/" class="text-decoration-none text-muted" >
+      <router-link to="/" class="text-decoration-none text-muted">
         vue-commerce
       </router-link>
       <form class="d-flex">
@@ -18,24 +18,29 @@
         </button>
       </form>
       <div class="d-flex">
-        <button
-          class="btn btn-secondary btn-sm disabled me-2"
-          data-bs-toggle="tooltip"
-          data-bs-placement="bottom"
-          title="Favoritos"
-          type="button"
-        >
-          <i class="bi bi-heart"></i>
-        </button>
-        <button
-          class="btn btn-secondary btn-sm disabled"
-          data-bs-toggle="tooltip"
-          data-bs-placement="bottom"
-          title="Carrito de compras"
-          type="button"
-        >
-          <i class="bi bi-cart"></i>
-        </button>
+        <router-link to="/favoritos">
+          <button
+            class="btn btn-secondary btn-sm me-2 gray-100"
+            data-bs-toggle="tooltip"
+            data-bs-placement="bottom"
+            title="Favoritos"
+            type="button"
+          >
+            <i class="bi bi-heart"></i>
+          </button>
+        </router-link>
+        <router-link to="/carrito">
+          <button
+            class="btn btn-secondary btn-sm"
+            data-bs-toggle="tooltip"
+            data-bs-placement="bottom"
+            title="Carrito de compras"
+            type="button"
+          >
+            <i class="bi bi-cart"> </i>
+            <span class="badge bg-secondary">0</span>
+          </button>
+        </router-link>
       </div>
     </div>
   </nav>

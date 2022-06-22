@@ -1,28 +1,45 @@
 <template>
-  <div class="home mt-5">
-    <div class="row">
-      <div class="col-6 col-md-4" v-for="i in 7" :key="i">
-        <div class="card mb-3">
+  <div class="home">
+    <div class="container text-center">
+      <div
+        class="btn-group btn-group-sm"
+        role="group"
+        aria-label="Basic outlined example"
+      >
+        <button type="button" class="btn btn-outline-success">OFERTAS</button>
+        <button type="button" class="btn btn-outline-success">DEPORTES</button>
+        <button type="button" class="btn btn-outline-success">MÚSICA</button>
+        <button type="button" class="btn btn-outline-success">HOGAR</button>
+        <button type="button" class="btn btn-outline-success">
+          TECNOLOGÍA
+        </button>
+      </div>
+    </div>
+    <div class="card mt-5">
+      <div class="card-body">
+        <i class="bi bi-tag-fill"></i><span class="fw-bold">PRODUCTOS</span>
+      </div>
+    </div>
+    <!-- SECCIÓN PRODUCTOS -->
+    <div class="row mt-2">
+      <div class="col-6 col-md-4" v-for="(producto, i) in productos" :key="i">
+        <div class="card mb-3 card-product" style="max-height: 400px">
           <img
-            src="https://pixabay.com/get/gf02480279a21e74c96815468f368138bb44f98f0ec22ff6957e122c18181f9be8bf1619ec3ca2da21a22ececc03b4d6bdfca10efb18dd044d527bc78d7f1b4ddbf09076d1027e340f084933392e11765_640.jpg"
+            :src="require(`@/assets/img/${producto.imagen}`)"
             class="card-img-top"
-            alt="..."
+            style="max-height: 200px"
+            :key="i"
           />
           <div class="card-body">
             <div class="d-flex justify-content-between">
-              <h5 class="card-title">$1.800</h5>
+              <h5 class="card-title">$ {{ producto.precio }}</h5>
               <span class="text-end"><i class="bi bi-heart"></i></span>
             </div>
             <p class="card-text">
-              This is a wider card with supporting text below as a natural
-            </p>
-            <p>
-              <router-link class="btn btn-primary" :to="`/products/${i}`">
-                Detalle
-              </router-link>
+              {{ producto.descripcion }}
             </p>
             <p class="card-text">
-              <small class="text-muted">Last updated 3 mins ago</small>
+              <small class="text-muted">Publicado: 17/05/2021</small>
             </p>
           </div>
         </div>
@@ -32,20 +49,62 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   name: "Home-App",
   data() {
     return {
-      users: [],
+      productos: [
+        {
+          descripcion: "Luces LED",
+          imagen: "apple.jpg",
+          precio: "5.025",
+          oferta: false,
+        },
+        {
+          descripcion: "Joystick inalámbrico",
+          imagen: "jostick_ps4.jpg",
+          precio: "4.300",
+          oferta: false,
+        },
+        {
+          descripcion: "Parlante",
+          imagen: "parlante.jpg",
+          precio: "5.699",
+          oferta: true,
+        },
+        { descripcion: "VR Ps4", imagen: "vr.jpg", precio: "69.999" },
+        {
+          descripcion: "Guitarra Criolla",
+          imagen: "guitarra.jpg",
+          precio: "7.999",
+          oferta: true,
+        },
+        {
+          descripcion: "Raqueta de tenis profesional",
+          imagen: "raqueta.jpg",
+          precio: "21.659",
+          oferta: false,
+        },
+        {
+          descripcion: "Pelota Jabulani",
+          imagen: "pelota.jpg",
+          precio: "21.659",
+          oferta: true,
+        },
+        {
+          descripcion: "Teclado Yamaha",
+          imagen: "teclado.jpg",
+          precio: "21.659",
+          oferta: false,
+        },
+        {
+          descripcion: "Sillon 3 cuerpos",
+          imagen: "sillon.jpg",
+          precio: "80.659",
+          oferta: true,
+        },
+      ],
     };
-  },
-  async mounted() {
-    const response = await axios.get(
-      "https://jsonplaceholder.typicode.com/users"
-    );
-    this.users = response.data;
   },
 };
 </script>
