@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home'
-import Products from '@/views/Producto'
+import Product from '@/views/Producto'
 import Carrito from '@/views/Carrito'
 import Favoritos from '@/views/Favoritos'
 
@@ -14,9 +14,9 @@ const routes = [
     component: Home
   },
   {
-    path: '/productos/:id',
-    name: 'Productos',
-    component: Products
+    path: '/producto/:id',
+    name: 'Producto',
+    component: Product
   },
   {
     path: '/carrito',
