@@ -1,8 +1,17 @@
 <template>
   <div class="container mt-5">
     <h4>Carrito</h4>
+
+    <div class="alert alert-success" role="alert" v-show="mensajeExitoso">
+      <h4 class="alert-heading">¡Gracias por su compra!</h4>
+      <p>
+        El producto será enviado a la brevedad, mientras tanto podes seguir comprando.
+      </p>
+      <hr />
+    </div>
+
     <div class="list-group">
-      <label class="list-group-item" v-for="(c,index) in carrito" :key="index">
+      <label class="list-group-item" v-for="(c, index) in carrito" :key="index">
         <div class="d-flex justify-content-between">
           <div class="d-flex flex-row">
             <img
@@ -12,21 +21,30 @@
             />
             <div class="d-flex flex-row">
               <div class="ms-4 align-self-center">
-                <p>{{c.descripcion}}</p>
-                <h4>${{c.precio}}</h4>
+                <p>{{ c.descripcion }}</p>
+                <h4>${{ c.precio }}</h4>
               </div>
               <div
                 class="btn-group btn-carrito align-self-center ms-5"
                 role="group"
                 aria-label="Basic example"
               >
-                <button type="button" class="btn btn-outline-success" :disabled="c.cantidad == 1" @click="c.cantidad -= 1">
+                <button
+                  type="button"
+                  class="btn btn-outline-success"
+                  :disabled="c.cantidad == 1"
+                  @click="c.cantidad -= 1"
+                >
                   <i class="bi bi-dash"></i>
                 </button>
                 <button type="button" class="btn btn-outline-success disabled">
-                  {{c.cantidad}}
+                  {{ c.cantidad }}
                 </button>
-                <button type="button" class="btn btn-outline-success" @click="c.cantidad += 1">
+                <button
+                  type="button"
+                  class="btn btn-outline-success"
+                  @click="c.cantidad += 1"
+                >
                   <i class="bi bi-plus"></i>
                 </button>
               </div>
@@ -48,11 +66,25 @@
       <label class="list-group-item" v-if="carrito.length">
         <div class="d-flex justify-content-end">
           <div class="d-flex flex-column">
-            <h3>Total: ${{total | currency}}</h3>
-            <button type="button" class="btn btn-success">
+            <h3>Total: ${{ total | currency }}</h3>
+            <button
+              data-bs-toggle="modal"
+              data-bs-target="#compra"
+              type="button"
+              class="btn btn-success"
+            >
               COMPRAR
             </button>
           </div>
+        </div>
+        <div
+          class="modal fade"
+          id="compra"
+          tabindex="-1"
+          aria-labelledby="compraLabel"
+          aria-hidden="true"
+        >
+          <Compra @success="mensajeExitoso=true" />
         </div>
       </label>
     </div>
@@ -60,28 +92,35 @@
 </template>
 
 <script>
-import {mapMutations} from 'vuex'
+import Compra from "@/components/carrito/Compra";
+import { mapMutations } from "vuex";
 export default {
   name: "carrito-app",
+  components: { Compra },
+  data(){
+    return { 
+      mensajeExitoso: false
+    }
+  },  
   methods: {
-    ...mapMutations(['eliminarCarrito'])
+    ...mapMutations(["eliminarCarrito"]),
   },
   computed: {
-    carrito(){
+    carrito() {
       return this.$store.state.carrito;
     },
-    total(){
-      const precios = this.carrito.map(c => c.precio * c.cantidad );
+    total() {
+      const precios = this.carrito.map((c) => c.precio * c.cantidad);
       const reducer = (accumulator, curr) => accumulator + curr;
-      return precios.reduce(reducer)
-    }
+      return precios.reduce(reducer);
+    },
   },
   filters: {
-    currency(value){
-      let locale = Intl.NumberFormat('en-US');
-      return locale.format(value)
-    }
-  }
+    currency(value) {
+      let locale = Intl.NumberFormat("en-US");
+      return locale.format(value);
+    },
+  },
 };
 </script>
 

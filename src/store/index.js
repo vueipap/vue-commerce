@@ -95,6 +95,9 @@ const store = new Vuex.Store({
     },
     eliminarCarrito(state, producto) {
       state.carrito = state.carrito.filter(c => c.id != producto.id)
+    },
+    vaciarCarrito(state){
+      state.carrito = []
     }
   },
 })
