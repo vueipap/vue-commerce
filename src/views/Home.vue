@@ -6,11 +6,6 @@
         role="group"
         aria-label="Basic outlined example"
       >
-        <router-link to="?tipo=oferta"
-          ><button type="button" class="btn btn-outline-success">
-            OFERTAS
-          </button>
-        </router-link>
         <router-link to="?tipo=deporte">
           <button type="button" class="btn btn-outline-success">
             DEPORTES
@@ -28,6 +23,16 @@
           </button>
         </router-link>
       </div>
+    </div>
+    <div class="form-check d-flex justify-content-center">
+      <input
+        v-model="oferta"
+        class="form-check-input text-center"
+        type="checkbox"
+        id="flexCheckChecked"
+        checked
+      />
+      <label class="form-check-label" for="flexCheckChecked"> Ofertas </label>
     </div>
     <div class="card mt-5">
       <div class="card-body">
@@ -64,10 +69,8 @@
                 class="text-end text-secondary"
                 style="cursor: pointer"
               >
-                <i
-                  class="bi"
-                  :class="esFavorito(producto) ? 'bi-heart-fill' : 'bi-heart'"
-                ></i>
+                <i v-if="esFavorito(producto)" class="bi bi-heart-fill"></i>
+                <i v-else class="bi bi-heart"> </i>
               </span>
             </div>
             <p class="card-text text-secondary">
@@ -90,6 +93,7 @@ export default {
   data() {
     return {
       tipo: null,
+      oferta:false,
     };
   },
   methods: {
@@ -109,6 +113,7 @@ export default {
         .length;
     },
   },
+
   computed: {
     productos() {
       return this.$store.state.productos;
@@ -117,15 +122,16 @@ export default {
       return this.$store.state.favoritos;
     },
     productosPorTipo() {
+      let productos = this.productos
+      if(this.oferta){
+        productos =  productos.filter((producto) => producto.oferta);
+      }
       if (this.tipo) {
-        if (this.tipo == "oferta") {
-          return this.productos.filter((producto) => producto.oferta);
-        }
-        return this.productos.filter(
+        productos = productos.filter(
           (producto) => producto.categoria == this.tipo
         );
       }
-      return this.productos;
+      return productos;
     },
   },
   watch: {
@@ -133,8 +139,6 @@ export default {
       handler: function (search) {
         this.tipo = search;
       },
-      deep: true,
-      immediate: true,
     },
   },
   filters: {
